@@ -1,0 +1,5 @@
+DATABASE_URL="postgresql://androidtech:androidtech@localhost:5432/androidtech"
+JWT_SECRET="troque-esta-chave-por-uma-bem-grande-e-secreta-123456789"
+ADMIN_EMAIL="admin@androidtechcell.local"
+ADMIN_PASSWORD=Brasil15$0
+

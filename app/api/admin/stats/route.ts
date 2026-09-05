@@ -1,0 +1,2 @@
+import {NextResponse} from "next/server";import {db,requireAdmin} from "@/lib";
+export async function GET(){try{await requireAdmin();const [users,orders,pending,services,paid]=await Promise.all([db.user.count(),db.order.count(),db.order.count({where:{status:{in:["PENDING","PROCESSING"]}}}),db.service.count({where:{active:true}}),db.payment.aggregate({where:{status:"PAID"},_sum:{amountCents:true}})]);return NextResponse.json({users,orders,pending,services,revenueCents:paid._sum.amountCents||0})}catch{return NextResponse.json({error:"Acesso negado"},{status:403})}}

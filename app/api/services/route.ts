@@ -1,0 +1,1 @@
+import {NextResponse} from "next/server";import {db} from "@/lib";export async function GET(){return NextResponse.json({services:await db.service.findMany({where:{active:true},orderBy:{brand:"asc"}})})}

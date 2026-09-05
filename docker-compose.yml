@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: android-tech-cell-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: atc
+      POSTGRES_PASSWORD: atc_password
+      POSTGRES_DB: android_tech_cell
+    ports:
+      - "5432:5432"
+    volumes:
+      - atc_pgdata:/var/lib/postgresql/data
+volumes:
+  atc_pgdata:

@@ -1,0 +1,13 @@
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql" url = env("DATABASE_URL") }
+enum Role { CUSTOMER ADMIN }
+enum OrderStatus { PENDING PROCESSING COMPLETED CANCELLED }
+enum TransactionType { CREDIT PURCHASE DEBIT REFUND }
+enum PaymentStatus { PENDING PAID EXPIRED CANCELLED }
+model User {
+ id String @id @default(cuid()); name String; email String @unique; passwordHash String; role Role @default(CUSTOMER); credits Int @default(0); createdAt DateTime @default(now()); orders Order[]; transactions CreditTransaction[]; payments Payment[]
+}
+model Service { id String @id @default(cuid()); brand String; name String; description String?; price Int; active Boolean @default(true); createdAt DateTime @default(now()); orders Order[] }
+model Order { id String @id @default(cuid()); userId String; serviceId String; status OrderStatus @default(PENDING); creditsUsed Int; deviceInfo String?; createdAt DateTime @default(now()); user User @relation(fields:[userId], references:[id]); service Service @relation(fields:[serviceId], references:[id]) }
+model CreditTransaction { id String @id @default(cuid()); userId String; type TransactionType; amount Int; note String?; createdAt DateTime @default(now()); user User @relation(fields:[userId], references:[id]) }
+model Payment { id String @id @default(cuid()); userId String; provider String @default("MOCK"); externalId String? @unique; amountCents Int; credits Int; status PaymentStatus @default(PENDING); txid String?; copyPaste String?; createdAt DateTime @default(now()); paidAt DateTime?; user User @relation(fields:[userId], references:[id]); @@index([userId,status]) }

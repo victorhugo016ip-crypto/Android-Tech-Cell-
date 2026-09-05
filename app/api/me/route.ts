@@ -1,0 +1,1 @@
+import {NextResponse} from "next/server";import {requireUser} from "@/lib";export async function GET(){try{const u=await requireUser();return NextResponse.json({id:u.id,name:u.name,email:u.email,role:u.role,credits:u.credits})}catch{return NextResponse.json({error:"Não autenticado"},{status:401})}}
