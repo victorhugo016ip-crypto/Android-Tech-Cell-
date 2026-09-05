@@ -47,6 +47,7 @@ model Coupon {
   usedCount Int        @default(0)
   active    Boolean    @default(true)
   expiresAt DateTime?
+  payments  Payment[]
   createdAt DateTime   @default(now())
 }
 
@@ -103,11 +104,13 @@ model Payment {
   externalId  String?       @unique
   amountCents Int
   credits     Int
+  couponId    String?
   status      PaymentStatus @default(PENDING)
   txid        String?
   copyPaste   String?
   createdAt   DateTime      @default(now())
   paidAt      DateTime?
+  coupon      Coupon?       @relation(fields: [couponId], references: [id])
   user        User          @relation(fields: [userId], references: [id])
 
   @@index([userId, status])
